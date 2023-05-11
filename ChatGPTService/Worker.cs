@@ -1,6 +1,9 @@
 ﻿using OpenAI_API;
 using OpenAI_API.Chat;
+using OpenAI_API.Models;
+using OpenAI_API.Moderation;
 using System;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ChatGPTService
 {
@@ -19,10 +22,12 @@ namespace ChatGPTService
 
             //var api = new OpenAI_API.OpenAIAPI("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");
             //var api = new OpenAI_API.OpenAIAPI(new APIAuthentication("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", "org-xZSDl8bqs3GPFdQRNBs3HUd8"));
-            var result = await api.Completions.GetCompletion("test");
+            var asd = await api.Completions.GetCompletion("test");
 
+            //var result =  await CreateChatCompletion();
 
-            await TestChadv2();
+            await Test1();
+            //await TestChadv2();
 
 
 
@@ -52,7 +57,7 @@ namespace ChatGPTService
             }
         }
 
-        public async Task TestChad()
+        public async Task TestChat()
         {
             var chat = api.Chat.CreateConversation();
 
@@ -82,7 +87,7 @@ namespace ChatGPTService
             }
         }
 
-        public async Task TestChadv2()
+        public async Task TestChatv2()
         {
             var chat = api.Chat.CreateConversation();
 
@@ -111,6 +116,29 @@ namespace ChatGPTService
                 await ColorfulFontRed(response);
             }
           
+        }
+
+        public async Task<ChatResult> CreateChatCompletion()
+        {
+
+            // for example
+            var result = await api.Chat.CreateChatCompletionAsync(new ChatRequest() 
+                { 
+                Model = Model.ChatGPTTurbo,
+                Temperature = 0.1,
+                MaxTokens = 50,
+                Messages = new ChatMessage[] {
+                    new ChatMessage(ChatMessageRole.User, "Hello!")}
+
+                });
+
+            return result;
+            //var result2 = api.Chat.CreateChatCompletionAsync("Hello!");
+
+            //var reply = results.Choices[0].Message;
+            //Console.WriteLine($"{reply.Role}: {reply.Content.Trim()}");
+         
+            //Console.WriteLine(results);
         }
 
         public async Task ColorfulFontDarkRed(string write)
