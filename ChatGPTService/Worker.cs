@@ -35,19 +35,20 @@ namespace ChatGPTService
 
         public async Task Test1()
         {
+            var chat = api.Chat.CreateConversation();
+
             for (; ; )
             {
-                Console.BackgroundColor = ConsoleColor.DarkRed;
+                Console.BackgroundColor = ConsoleColor.Black;
                 await Console.Out.WriteLineAsync("\nSoru sor: \n");
                 Console.BackgroundColor = ConsoleColor.Black;
 
                 var input = Console.ReadLine();
                 await Console.Out.WriteLineAsync();
 
-                var chat = api.Chat.CreateConversation();
                 chat.AppendUserInput(input.ToString());
 
-                Console.BackgroundColor = ConsoleColor.Red;
+                Console.BackgroundColor = ConsoleColor.DarkMagenta;
                 await foreach (var res in chat.StreamResponseEnumerableFromChatbotAsync())
                 {
                     Console.Write(res);
