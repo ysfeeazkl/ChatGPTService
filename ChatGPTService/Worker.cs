@@ -1,5 +1,6 @@
 ﻿using OpenAI_API;
 using OpenAI_API.Chat;
+using OpenAI_API.Images;
 using OpenAI_API.Models;
 using OpenAI_API.Moderation;
 using System;
@@ -15,6 +16,7 @@ namespace ChatGPTService
         public Worker(ILogger<Worker> logger)
         {
             _logger = logger;
+            //api = new OpenAI_API.OpenAIAPI(new APIAuthentication("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", "org-xZSDl8bqs3GPFdQRNBs3HUd8"));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -26,11 +28,52 @@ namespace ChatGPTService
 
             //var result =  await CreateChatCompletion();
 
-            await Test1();
+            //await UploadFile();
+            //await Test1();
             //await TestChadv2();
 
+            await CreateImage();
+
+            Console.ReadKey();
+        }
 
 
+        public async Task CreateImage()
+        {
+            for (;;)
+            {
+                await Console.Out.WriteLineAsync();
+                Console.BackgroundColor = ConsoleColor.DarkRed;
+                await Console.Out.WriteLineAsync("\n Resimi betimle: \n");
+                Console.BackgroundColor = ConsoleColor.Black;
+
+                var input = Console.ReadLine();
+                await Console.Out.WriteLineAsync();
+
+                var result = await api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest(input, 1, ImageSize._512));
+
+                //var result = await api.ImageGenerations.CreateImageAsync("A drawing of a computer writing a test");
+
+                await Console.Out.WriteLineAsync();
+                Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                Console.WriteLine(result.Data[0].Url);
+                Console.BackgroundColor = ConsoleColor.Black;
+            }
+
+          
+        }
+
+        public async Task UploadFile()
+        {
+            var response = await api.Files.UploadFileAsync("C:\\Users\\yusuf\\OneDrive\\Documents\\GitHub\\ChatGPTService\\ChatGPTService\\test.txt");
+            Console.Write(response.Id); //the id of the uploaded file
+
+            // for example
+            var response2 = await api.Files.GetFilesAsync();
+            foreach (var file in response2)
+            {
+                Console.WriteLine(file.Name);
+            }
         }
 
         public async Task Test1()
