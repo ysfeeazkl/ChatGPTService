@@ -27,7 +27,7 @@ namespace ChatGPTService
             //var result =  await CreateChatCompletion();
 
             await Test1();
-            //await TestChadv2();
+            //await TestChatv2();
 
 
 
