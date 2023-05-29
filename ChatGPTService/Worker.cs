@@ -19,7 +19,6 @@ namespace ChatGPTService
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-
             //var api = new OpenAI_API.OpenAIAPI("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");
             //var api = new OpenAI_API.OpenAIAPI(new APIAuthentication("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", "org-xZSDl8bqs3GPFdQRNBs3HUd8"));
             var asd = await api.Completions.GetCompletion("test");
@@ -33,6 +32,10 @@ namespace ChatGPTService
 
         }
 
+        public async void calculater ()
+        {
+
+        }
         public async Task Test1()
         {
             var chat = api.Chat.CreateConversation();
