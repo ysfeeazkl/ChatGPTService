@@ -2,7 +2,9 @@
 using OpenAI_API.Chat;
 using OpenAI_API.Models;
 using OpenAI_API.Moderation;
+using OpenCvSharp;
 using System;
+using Tesseract;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace ChatGPTService
@@ -21,15 +23,34 @@ namespace ChatGPTService
         {
             //var api = new OpenAI_API.OpenAIAPI("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");
             //var api = new OpenAI_API.OpenAIAPI(new APIAuthentication("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", "org-xZSDl8bqs3GPFdQRNBs3HUd8"));
-            var asd = await api.Completions.GetCompletion("test");
+            //var asd = await api.Completions.GetCompletion("test");
 
             //var result =  await CreateChatCompletion();
 
-            await Test1();
+            //await Test1();
             //await TestChatv2();
 
+            string imagePath = "test6.jpg";
 
+            // Tesseract OCR için yeni bir işlemci oluşturun
+            using (var engine = new TesseractEngine("./tessdata", "tur", EngineMode.Default))
+            {
+                // Görüntüyü yükle
+                using (var img = Pix.LoadFromFile(imagePath))
+                {
+                    // Tesseract OCR işlemi için sayfa oluştur
+                    using (var page = engine.Process(img))
+                    {
+                        // Metni al
+                        string extractedText = page.GetText();
 
+                        // Çıktıyı ekrana yazdır
+                        Console.WriteLine(extractedText);
+                    }
+                }
+            }
+
+            Console.ReadLine();
         }
 
         public async void calculater ()
